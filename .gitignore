@@ -1,0 +1,8 @@
+.env
+.venv/
+.pdm-build/
+.pdm-python
+__pycache__/
+*.pyc
+# contains a hardcoded Geoapify API key
+recommender/playground/

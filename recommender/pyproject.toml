@@ -1,0 +1,32 @@
+[project]
+name = "recommender"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "rusakpiotr", email = "rusakpiotr@proton.me"},
+]
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "motor",
+    "pymongo",
+    "pydantic",
+    "haversine",
+    "python-dateutil",
+]
+requires-python = "==3.14.*"
+license = {text = "MIT"}
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+# Imports use `from src.x import ...`, so `src` itself is the package
+# and the project root must be on sys.path (not src-layout).
+package-dir = "."
+includes = ["src"]

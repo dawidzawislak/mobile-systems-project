@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+motor
+pymongo
+pydantic
+haversine
+python-dateutil

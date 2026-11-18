@@ -1,0 +1,30 @@
+[project]
+name = "ai"
+version = "0.1.0"
+description = "AI category prediction service"
+authors = [
+    {name = "rusakpiotr", email = "rusakpiotr@proton.me"},
+]
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "pydantic",
+    "python-dotenv",
+]
+requires-python = "==3.14.*"
+license = {text = "MIT"}
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+# Flat layout: imports use `from models import ...`, so the ai/ directory
+# itself must be on sys.path.
+package-dir = "."
+includes = ["main.py", "models.py"]

@@ -1,0 +1,38 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: msp_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: places_db
+    restart: unless-stopped
+
+  recommender:
+    build: ./recommender
+    container_name: msp_recommender
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB=places_db
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  ai:
+    build: ./ai
+    container_name: msp_ai
+    ports:
+      - "8002:8002"
+    env_file: .env   # AI_URL, AI_KEY (optionally AI_MODEL)
+    environment:
+      - RECOMMENDER_URL=http://recommender:8001
+    depends_on:
+      - recommender
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
