@@ -34,5 +34,20 @@ services:
       - recommender
     restart: unless-stopped
 
+  api:
+    build: .
+    container_name: mobile_project_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/api/api
+    environment:
+      - RECOMMENDER_URL=http://recommender:8001
+      - AI_SERVICE_URL=http://ai:8002
+    depends_on:
+      - recommender
+      - ai
+    restart: unless-stopped
+
 volumes:
   mongodb_data:

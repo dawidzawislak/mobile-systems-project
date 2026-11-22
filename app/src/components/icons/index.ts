@@ -1,0 +1,23 @@
+export { default as ArtIcon } from "./ArtIcon";
+export { default as CastleIcon } from "./CastleIcon";
+export { default as ChampagneIcon } from "./ChampagneIcon";
+export { default as ChevronDownIcon } from "./ChevronDownIcon";
+export { default as ClockIcon } from "./ClockIcon";
+export { default as ChevronLeftIcon } from "./ChevronLeftIcon";
+export { default as ChevronRightIcon } from "./ChevronRightIcon";
+export { default as CloseIcon } from "./CloseIcon";
+export { default as CoffeeIcon } from "./CoffeeIcon";
+export { default as DesignIcon } from "./DesignIcon";
+export { default as EggIcon } from "./EggIcon";
+export { default as FoodIcon } from "./FoodIcon";
+export { default as KebabIcon } from "./KebabIcon";
+export { default as LightBulbIcon } from "./LightBulbIcon";
+export { default as MuseumIcon } from "./MuseumIcon";
+export { default as PinIcon } from "./PinIcon";
+export { default as PlusIcon } from "./PlusIcon";
+export { default as SaladIcon } from "./SaladIcon";
+export { default as SandwichIcon } from "./SandwichIcon";
+export { default as SoupIcon } from "./SoupIcon";
+export { default as TrashIcon } from "./TrashIcon";
+export { default as TreeIcon } from "./TreeIcon";
+

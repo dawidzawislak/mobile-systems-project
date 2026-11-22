@@ -112,46 +112,46 @@ flowchart LR
 ### 1. Przygotowanie backendu
 
 **Dane i baza**
-- [ ] Pobranie atrakcji i gastronomii Krakowa z Geoapify Places v2 (współrzędne, kategorie, godziny otwarcia, popularność)
-- [ ] Ujednolicenie kategorii atrakcji i kuchni (słownik kategorii)
-- [ ] Zasilenie MongoDB i utworzenie indeksów (m.in. indeks geoprzestrzenny `2dsphere`)
+- [x] Pobranie atrakcji i gastronomii Krakowa z Geoapify Places v2 (współrzędne, kategorie, godziny otwarcia, popularność)
+- [x] Ujednolicenie kategorii atrakcji i kuchni (słownik kategorii)
+- [x] Zasilenie MongoDB i utworzenie indeksów (m.in. indeks geoprzestrzenny `2dsphere`)
 
 **Recommender (`recommender/`)**
-- [ ] Endpointy `GET /categories`, `GET /food-categories`, `GET /stats`
-- [ ] Parsowanie godzin otwarcia i sprawdzanie, czy miejsce jest otwarte w danym dniu i przedziale czasowym
-- [ ] Ocena miejsca (popularność, odległość od punktu bazowego / poprzedniego punktu, dopasowanie do kategorii)
-- [ ] Układanie planu dnia (kolejność atrakcji, posiłki w odpowiednich porach, powrót do punktu bazowego, brak powtórzeń między dniami)
-- [ ] Plan na wiele dni (harmonogram + współrzędne do trasy)
+- [x] Endpointy `GET /categories`, `GET /food-categories`, `GET /stats`
+- [x] Parsowanie godzin otwarcia i sprawdzanie, czy miejsce jest otwarte w danym dniu i przedziale czasowym
+- [x] Ocena miejsca (popularność, odległość od punktu bazowego / poprzedniego punktu, dopasowanie do kategorii)
+- [x] Układanie planu dnia (kolejność atrakcji, posiłki w odpowiednich porach, powrót do punktu bazowego, brak powtórzeń między dniami)
+- [x] Plan na wiele dni (harmonogram + współrzędne do trasy)
 
 **AI Service (`ai/`)**
-- [ ] Klient OpenAI API (klucz i model konfigurowane przez zmienne środowiskowe)
-- [ ] Prompt z listą dostępnych kategorii (pobieranych z Recommendera) i wymuszeniem odpowiedzi w formacie JSON
-- [ ] Walidacja odpowiedzi: odrzucenie kategorii spoza słownika, obsługa błędów i timeoutów
-- [ ] Endpoint `POST /predict`
+- [x] Klient OpenAI API (klucz i model konfigurowane przez zmienne środowiskowe)
+- [x] Prompt z listą dostępnych kategorii (pobieranych z Recommendera) i wymuszeniem odpowiedzi w formacie JSON
+- [x] Walidacja odpowiedzi: odrzucenie kategorii spoza słownika, obsługa błędów i timeoutów
+- [x] Endpoint `POST /predict`
 
 **API Gateway (`api/`)**
-- [ ] Proxy do Recommendera i AI Service (`/api/recommend`, `/api/categories`, `/api/food-categories`, `/api/predict-preferences`)
+- [x] Proxy do Recommendera i AI Service (`/api/recommend`, `/api/categories`, `/api/food-categories`, `/api/predict-preferences`)
 - [ ] Walidacja danych wejściowych, konfiguracja CORS, obsługa błędów usług wewnętrznych
-- [ ] Dokumentacja OpenAPI (Swagger)
+- [x] Dokumentacja OpenAPI (Swagger)
 
 **Wspólne**
-- [ ] Dockerfile dla każdej usługi + `docker-compose.yml` (sieć wewnętrzna, wolumen dla MongoDB)
+- [x] Dockerfile dla każdej usługi + `docker-compose.yml` (sieć wewnętrzna, wolumen dla MongoDB)
 - [ ] Testy jednostkowe scoringu, planera i parsera godzin otwarcia (pytest)
 
 ### 2. Przygotowanie frontendu
 
-- [ ] Konfiguracja projektu (Vite, Tailwind, ESLint), klient API
-- [ ] Komponenty wspólne i zasoby współdzielone
-- [ ] Stan planu w aplikacji za pomocą kontekstu
-- [ ] `Home` / `HomePage`: ekran startowy
-- [ ] `Map`: mapa Leaflet z kafelkami Geoapify, wybór punktu bazowego kliknięciem
-- [ ] `NewDay` + `DaySelector`: dodawanie dni, godziny zwiedzania, wybór posiłków (śniadanie / obiad / kolacja)
-- [ ] `ChooseCategories`: wybór kategorii atrakcji i kuchni (z `/api/categories`, `/api/food-categories`) oraz pole tekstowe → `/api/predict-preferences` → automatyczne zaznaczenie kategorii (z możliwością korekty)
-- [ ] Zbudowanie żądania `/api/recommend` ze stanu aplikacji
-- [ ] `Plan` / `Schedule` + `PlanDayCard`, `TimelineItem`: harmonogram każdego dnia (godziny, atrakcje, restauracje)
-- [ ] `MapComponent`: trasa piesza na mapie (Geoapify Routing, `mode=walk`) z podziałem na dni, szczegóły miejsca po kliknięciu znacznika
-- [ ] Responsywny interfejs (mobile-first), stany ładowania i obsługa błędów (`AlertMessage`)
-- [ ] Zapisywanie ostatniego planu lokalnie (dostępny bez sieci)
+- [x] Konfiguracja projektu (Vite, Tailwind, ESLint), klient API
+- [x] Komponenty wspólne i zasoby współdzielone
+- [x] Stan planu w aplikacji za pomocą kontekstu
+- [x] `Home` / `HomePage`: ekran startowy
+- [x] `Map`: mapa Leaflet z kafelkami Geoapify, wybór punktu bazowego kliknięciem
+- [x] `NewDay` + `DaySelector`: dodawanie dni, godziny zwiedzania, wybór posiłków (śniadanie / obiad / kolacja)
+- [x] `ChooseCategories`: wybór kategorii atrakcji i kuchni (z `/api/categories`, `/api/food-categories`) oraz pole tekstowe → `/api/predict-preferences` → automatyczne zaznaczenie kategorii (z możliwością korekty)
+- [x] Zbudowanie żądania `/api/recommend` ze stanu aplikacji
+- [x] `Plan` / `Schedule` + `PlanDayCard`, `TimelineItem`: harmonogram każdego dnia (godziny, atrakcje, restauracje)
+- [x] `MapComponent`: trasa piesza na mapie (Geoapify Routing, `mode=walk`) z podziałem na dni, szczegóły miejsca po kliknięciu znacznika
+- [x] Responsywny interfejs (mobile-first), stany ładowania i obsługa błędów (`AlertMessage`)
+- [ ] Zapisywanie ostatniego planu lokalnie (dostępny bez sieci) **
 
 ### 3. Deployment i konfiguracja PWA
 
