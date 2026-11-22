@@ -1,12 +1,15 @@
+import type { ReactElement } from 'react'
+
 type AlertType = 'success' | 'error' | 'info' | 'warning'
 
 interface AlertMessageProps {
   type: AlertType
   message: string
   onClose?: () => void
+  className?: string
 }
 
-const AlertMessage: React.FC<AlertMessageProps> = ({ type, message, onClose }: AlertMessageProps) => {
+const AlertMessage: React.FC<AlertMessageProps> = ({ type, message, onClose, className = '' }: AlertMessageProps) => {
   const getAlertStyles = (): string => {
     switch (type) {
       case 'success':
@@ -21,7 +24,7 @@ const AlertMessage: React.FC<AlertMessageProps> = ({ type, message, onClose }: A
     }
   }
 
-  const getIcon = (): JSX.Element => {
+  const getIcon = (): ReactElement => {
     switch (type) {
       case 'success':
         return (
@@ -69,7 +72,8 @@ const AlertMessage: React.FC<AlertMessageProps> = ({ type, message, onClose }: A
 
   return (
     <div
-      className={`${getAlertStyles()} border p-4 rounded-md mb-4 flex items-start`}
+      role={type === 'error' || type === 'warning' ? 'alert' : 'status'}
+      className={`${getAlertStyles()} border p-4 rounded-md flex items-start text-sm ${className}`}
     >
       <div className="flex-shrink-0 mr-3">{getIcon()}</div>
       <div className="flex-grow">{message}</div>

@@ -48,7 +48,7 @@ export default function Header() {
   const currentStep = STEPS.findIndex((s) => s.match(pathname));
 
   return (
-    <header className="flex-shrink-0 bg-white border-b border-gray-200">
+    <header className="flex-shrink-0 bg-white border-b border-gray-200 pt-[env(safe-area-inset-top)]">
       <div className="h-16 px-4 flex items-center">
         <Link to="/" className="flex items-center gap-2">
           <span className="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white">

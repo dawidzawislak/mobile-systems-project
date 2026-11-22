@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useRouteCtx } from "../hooks/useRouteCtx";
-import { Modal } from "../components/common";
+import { Modal, AlertMessage, Spinner } from "../components/common";
 import DaySelector from "../components/DaySelector";
 import type { TimelineItem } from "../types/models";
 import Content from "../components/common/Content";
@@ -46,6 +46,7 @@ export default function Map() {
     index: number;
   } | null>(null);
   const [loadingRoute, setLoadingRoute] = useState(false);
+  const [routeError, setRouteError] = useState<string | null>(null);
 
   useEffect(() => {
     if (schedule.length === 0) {
@@ -167,6 +168,7 @@ export default function Map() {
     if (waypoints.length >= 2) {
       try {
         setLoadingRoute(true);
+        setRouteError(null);
         const waypointsParam = waypoints.join("|");
         const response = await fetch(
           `https://api.geoapify.com/v1/routing?waypoints=${waypointsParam}&mode=walk&apiKey=${API_KEY}`
@@ -199,6 +201,9 @@ export default function Map() {
         }
       } catch (error) {
         console.error("Error fetching route:", error);
+        setRouteError(
+          "Couldn't load the walking route. Showing straight lines between stops."
+        );
         // Fallback: draw straight lines if API fails
         const routePoints = waypoints.map((wp) => {
           const [lat, lng] = wp.split(",").map(Number);
@@ -259,10 +264,18 @@ export default function Map() {
             {/* Loading indicator */}
             {loadingRoute && (
               <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg z-[1000]">
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-600"></div>
-                  <span className="text-sm">Calculating route...</span>
-                </div>
+                <Spinner size="sm" label="Calculating route..." />
+              </div>
+            )}
+
+            {routeError && !loadingRoute && (
+              <div className="absolute top-4 inset-x-4 z-[1000]">
+                <AlertMessage
+                  type="warning"
+                  message={routeError}
+                  onClose={() => setRouteError(null)}
+                  className="shadow-lg"
+                />
               </div>
             )}
 

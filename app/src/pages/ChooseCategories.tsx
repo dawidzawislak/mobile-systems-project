@@ -4,7 +4,7 @@ import { useRouteCtx } from "../hooks/useRouteCtx";
 import Content from "../components/common/Content";
 import { useNavigate } from "react-router-dom";
 import { API } from "../utils/api";
-import { Modal, Button, Textarea } from "../components/common";
+import { Modal, Button, Textarea, AlertMessage, Spinner } from "../components/common";
 import { buildRecommendRequest } from "../utils/requestBuilder";
 import { InterestsDict, FoodDict } from "../utils/InterestPageDict";
 
@@ -29,10 +29,16 @@ export default function ChooseCategories() {
   const [error, setError] = useState<string | null>(null);
   const [userInput, setUserInput] = useState<string>("");
   const [isPredicting, setIsPredicting] = useState(false);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [categoriesError, setCategoriesError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    API.categories.getAll()
+    setIsLoadingCategories(true);
+    setCategoriesError(null);
+
+    const placesRequest = API.categories.getAll()
       .then((data) => {
         // Filter out unwanted categories
         const filteredCategories = data.categories.filter((cat: string) => {
@@ -44,15 +50,21 @@ export default function ChooseCategories() {
                  !cat.startsWith("access_limited");
         });
         setAvailablePlaceCategories(filteredCategories);
-      })
-      .catch((err) => console.error("Error fetching categories:", err));
+      });
 
-    API.foodCategories.getAll()
-      .then((data) => {
-        setAvailableCuisineTypes(data.food_categories);
+    const foodRequest = API.foodCategories.getAll().then((data) => {
+      setAvailableCuisineTypes(data.food_categories);
+    });
+
+    Promise.all([placesRequest, foodRequest])
+      .catch((err) => {
+        console.error("Error fetching categories:", err);
+        setCategoriesError(
+          "Couldn't load categories. Check your connection and try again."
+        );
       })
-      .catch((err) => console.error("Error fetching food categories:", err));
-  }, []);
+      .finally(() => setIsLoadingCategories(false));
+  }, [reloadKey]);
 
   // Helper function to format category labels
   const formatCategoryLabel = (category: string): string => {
@@ -139,6 +151,7 @@ export default function ChooseCategories() {
         header="Choose Categories"
         buttonNext="Plan Tour"
         buttonNextAction={handleGenerateSchedule}
+        buttonNextDisabled={isGenerating || isLoadingCategories}
         buttonBack="Back"
         buttonBackAction={() => navigate("/plan")}
       >
@@ -167,6 +180,26 @@ export default function ChooseCategories() {
           </p>
         </div>
 
+        {isLoadingCategories && (
+          <Spinner label="Loading categories..." className="py-6" />
+        )}
+
+        {categoriesError && (
+          <div className="mb-4">
+            <AlertMessage type="error" message={categoriesError} />
+            <Button
+              onClick={() => setReloadKey((k) => k + 1)}
+              variant="secondary"
+              fullWidth
+              className="mt-2"
+            >
+              Retry
+            </Button>
+          </div>
+        )}
+
+        {!isLoadingCategories && !categoriesError && (
+        <>
         Preferred place categories:
         <CustomMultiSelect
           options={availablePlaceCategories.map((category) => {
@@ -192,17 +225,22 @@ export default function ChooseCategories() {
           value={cuisineTypes}
           onChange={(newCategories) => setCuisineTypes(newCategories)}
         />
+        </>
+        )}
         {error && (
-          <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error}
-          </div>
+          <AlertMessage
+            type="error"
+            message={error}
+            onClose={() => setError(null)}
+            className="my-4"
+          />
         )}
       </Content>
 
       {/* Loading Modal */}
       <Modal isOpen={isGenerating} onClose={() => {}}>
         <div className="flex flex-col items-center justify-center p-8">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-orange-500 mb-4"></div>
+          <Spinner size="lg" className="mb-4" />
           <h2 className="text-2xl font-bold mb-2">
             Creating Your Perfect Trip
           </h2>

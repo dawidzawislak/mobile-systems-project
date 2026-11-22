@@ -11,7 +11,7 @@ import Header from "./components/Header";
 export default function App() {
   return (
     <Router>
-      <div className="h-screen flex flex-col bg-white">
+      <div className="h-[100dvh] w-full max-w-lg mx-auto flex flex-col bg-white sm:shadow-xl">
         <Header />
         <main className="flex-grow overflow-hidden">
           <Routes>

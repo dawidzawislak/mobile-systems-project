@@ -8,3 +8,4 @@ export { default as Textarea } from "./Textarea";
 // export { default as FileUpload } from './FileUpload'
 // export { default as CustomMultiSelect } from './CustomMultiSelect'
 export { default as AlertMessage } from "./AlertMessage";
+export { default as Spinner } from "./Spinner";

@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useRouteCtx } from "../hooks/useRouteCtx";
-import Button from "../components/common/Button";
+import { AlertMessage, Spinner } from "../components/common";
 import Content from "../components/common/Content";
 
 // Fix for default marker icon in Leaflet
@@ -34,6 +34,8 @@ export default function Home() {
   const markerRef = useRef<L.Marker | null>(null);
   const { homeLocation, setHomeLocation } = useRouteCtx();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -75,6 +77,7 @@ export default function Home() {
 
         // Store in context
         setHomeLocation({ latitude: lat, longitude: lng });
+        setError(null);
       });
     }
 
@@ -88,12 +91,15 @@ export default function Home() {
 
   const handleUseDeviceLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
+      setError("Geolocation is not supported by your browser.");
       return;
     }
 
+    setError(null);
+    setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        setIsLocating(false);
         const { latitude, longitude } = position.coords;
 
         // Remove previous marker if exists
@@ -114,15 +120,21 @@ export default function Home() {
         // Store in context
         setHomeLocation({ latitude, longitude });
       },
-      () => {
-        alert("Unable to retrieve your location");
-      }
+      (err) => {
+        setIsLocating(false);
+        setError(
+          err.code === err.PERMISSION_DENIED
+            ? "Location access was denied. Allow it in your browser settings or tap the map instead."
+            : "Unable to retrieve your location. Tap the map to choose it manually."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
 
   const handleContinue = () => {
     if (homeLocation.latitude === 0 && homeLocation.longitude === 0) {
-      alert("Please select your apartment location first!");
+      setError("Please select your apartment location first.");
       return;
     }
     navigate("/plan");
@@ -132,14 +144,38 @@ export default function Home() {
     <Content
       header="Choose your apartment location"
       buttonNext="Continue planning"
-      buttonBack="Set current location"
+      buttonBack={isLocating ? "Locating..." : "Use my location"}
       buttonNextAction={handleContinue}
       buttonBackAction={handleUseDeviceLocation}
       buttonNextDisabled={
         homeLocation.latitude === 0 && homeLocation.longitude === 0
       }
     >
-      <div id="home-map" className="h-full w-full"></div>
+      <div className="relative h-full w-full">
+        <div id="home-map" className="h-full w-full"></div>
+        <div className="absolute top-3 inset-x-3 z-[1000] flex flex-col gap-2 pointer-events-none">
+          {homeLocation.latitude === 0 && homeLocation.longitude === 0 && !error && (
+            <AlertMessage
+              type="info"
+              message="Tap the map to mark where you're staying."
+              className="pointer-events-auto shadow"
+            />
+          )}
+          {isLocating && (
+            <div className="self-center bg-white px-4 py-2 rounded-lg shadow pointer-events-auto">
+              <Spinner size="sm" label="Finding your location..." />
+            </div>
+          )}
+          {error && (
+            <AlertMessage
+              type="error"
+              message={error}
+              onClose={() => setError(null)}
+              className="pointer-events-auto shadow"
+            />
+          )}
+        </div>
+      </div>
     </Content>
   );
 }
