@@ -4,7 +4,6 @@ import type {
   PlanDay,
   TourDay,
   DaySchedule,
-  BackgroundType,
 } from "../types/models";
 
 export interface RouteContextType {
@@ -20,8 +19,6 @@ export interface RouteContextType {
   setTourDays: (tourDays: TourDay[]) => void;
   schedule: DaySchedule[];
   setSchedule: (schedule: DaySchedule[]) => void;
-  backgroundType: BackgroundType;
-  setBackgroundType: (type: BackgroundType) => void;
 }
 
 export const RouteContext = createContext<RouteContextType | undefined>(

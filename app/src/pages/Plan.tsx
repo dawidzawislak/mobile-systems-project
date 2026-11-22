@@ -4,25 +4,18 @@ import PlanDayCard from "../components/PlanDayCard";
 import { useRouteCtx } from "../hooks/useRouteCtx";
 import { Button } from "../components/common";
 import { PlusIcon } from "../components/icons";
-import { useEffect } from "react";
 
 export default function Plan() {
-  const { planDays, setBackgroundType, setPlanDays } = useRouteCtx();
+  const { planDays, setPlanDays } = useRouteCtx();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setBackgroundType("plan");
-  }, [setBackgroundType]);
 
   return (
     <Content
       header="Tour time"
-      sidebar={true}
       buttonNext="Next"
       buttonNextAction={() => navigate("/categories")}
       buttonBack="Back"
       buttonBackAction={() => navigate("/home")}
-      className="rounded-tr-3xl"
     >
       <div className="flex flex-col gap-4">
         {planDays.map((plan, index) => (

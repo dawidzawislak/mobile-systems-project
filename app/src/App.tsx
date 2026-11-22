@@ -4,40 +4,16 @@ import Plan from "./pages/Plan";
 import NewDay from "./pages/NewDay";
 import Schedule from "./pages/Schedule";
 import ChooseCategories from "./pages/ChooseCategories";
-import { useRouteCtx } from "./hooks/useRouteCtx";
-import { useMemo } from "react";
-import backgroundImgDefault from "./assets/bg-default.png";
-import backgroundImgLocation from "./assets/bg-location.png";
-import backgroundImgCategories from "./assets/bg-categories.png";
-import backgroundImgPlan from "./assets/bg-plan.png";
 import Map from "./pages/Map";
 import HomePage from "./pages/HomePage";
+import Header from "./components/Header";
 
 export default function App() {
-  const { backgroundType } = useRouteCtx();
-
-  const backgroundImage = useMemo(() => {
-    switch (backgroundType) {
-      case "default":
-        return `url('${backgroundImgDefault}')`;
-      case "location":
-        return `url('${backgroundImgLocation}')`;
-      case "categories":
-        return `url('${backgroundImgCategories}')`;
-      case "plan":
-        return `url('${backgroundImgPlan}')`;
-      default:
-        return `url('${backgroundImgDefault}')`;
-    }
-  }, [backgroundType]);
-
   return (
     <Router>
-      <div
-        className="h-screen flex flex-col main-container transition-all transition-duration-1000"
-        style={{ backgroundImage }}
-      >
-        <main className="flex-grow overflow-hidden mt-[37vw]">
+      <div className="h-screen flex flex-col bg-white">
+        <Header />
+        <main className="flex-grow overflow-hidden">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<Home />} />

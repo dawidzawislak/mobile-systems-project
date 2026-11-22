@@ -7,13 +7,20 @@ input {
   color: #333;
 }
 
-.main-container {
-  background-size: 98% auto;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: top center;
-}
-
 html {
   background-color: #e6e6e6;
+}
+
+/* Hide scrollbars (scrolling still works) for a native app feel */
+* {
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
 }

@@ -1,6 +1,6 @@
 {
-  "name": "Local Route",
-  "short_name": "Local Route",
+  "name": "TripPlanner",
+  "short_name": "TripPlanner",
   "description": "Get personalized local recommendations for your trips!",
   "start_url": "/",
   "display": "standalone",

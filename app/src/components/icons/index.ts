@@ -12,7 +12,6 @@ export { default as EggIcon } from "./EggIcon";
 export { default as FoodIcon } from "./FoodIcon";
 export { default as KebabIcon } from "./KebabIcon";
 export { default as LightBulbIcon } from "./LightBulbIcon";
-export { default as LogoIcon } from "./LogoIcon";
 export { default as MuseumIcon } from "./MuseumIcon";
 export { default as PinIcon } from "./PinIcon";
 export { default as PlusIcon } from "./PlusIcon";

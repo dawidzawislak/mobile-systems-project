@@ -17,7 +17,6 @@ export default function ChooseCategories() {
     homeLocation,
     planDays,
     setSchedule,
-    setBackgroundType,
   } = useRouteCtx();
 
   const [availablePlaceCategories, setAvailablePlaceCategories] = useState<
@@ -33,7 +32,6 @@ export default function ChooseCategories() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setBackgroundType("categories");
     API.categories.getAll()
       .then((data) => {
         // Filter out unwanted categories
@@ -54,7 +52,7 @@ export default function ChooseCategories() {
         setAvailableCuisineTypes(data.food_categories);
       })
       .catch((err) => console.error("Error fetching food categories:", err));
-  }, [setBackgroundType]);
+  }, []);
 
   // Helper function to format category labels
   const formatCategoryLabel = (category: string): string => {
@@ -139,12 +137,10 @@ export default function ChooseCategories() {
     <>
       <Content
         header="Choose Categories"
-        sidebar={true}
         buttonNext="Plan Tour"
         buttonNextAction={handleGenerateSchedule}
         buttonBack="Back"
         buttonBackAction={() => navigate("/plan")}
-        className="rounded-tr-3xl"
       >
         {/* AI Input Section */}
         <div className="mb-6 relative z-10">

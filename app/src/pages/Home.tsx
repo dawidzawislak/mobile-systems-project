@@ -32,12 +32,8 @@ const apartmentIcon = L.icon({
 export default function Home() {
   const mapRef = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
-  const { homeLocation, setHomeLocation, setBackgroundType } = useRouteCtx();
+  const { homeLocation, setHomeLocation } = useRouteCtx();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setBackgroundType("location");
-  }, [setBackgroundType]);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -135,7 +131,6 @@ export default function Home() {
   return (
     <Content
       header="Choose your apartment location"
-      sidebar={true}
       buttonNext="Continue planning"
       buttonBack="Set current location"
       buttonNextAction={handleContinue}
@@ -143,7 +138,6 @@ export default function Home() {
       buttonNextDisabled={
         homeLocation.latitude === 0 && homeLocation.longitude === 0
       }
-      className="rounded-tr-3xl"
     >
       <div id="home-map" className="h-full w-full"></div>
     </Content>

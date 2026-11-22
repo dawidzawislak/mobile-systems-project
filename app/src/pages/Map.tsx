@@ -229,7 +229,6 @@ export default function Map() {
   return (
     <>
       <Content
-        sidebar={false}
         buttonBack="Back to Schedule"
         buttonBackAction={() => navigate("/schedule", { state: { selectedDay } })}
       >

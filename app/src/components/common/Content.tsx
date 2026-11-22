@@ -1,11 +1,9 @@
 import { type ReactNode } from "react";
-import { Button, Heading, Section } from ".";
-import Sidebar from "../Sidebar";
+import { Button, Heading } from ".";
 
 export default function Content({
   header = undefined,
   children,
-  sidebar,
   buttonNext,
   buttonBack,
   buttonNextAction,
@@ -15,7 +13,6 @@ export default function Content({
 }: {
   header?: string;
   children: ReactNode;
-  sidebar: boolean;
   buttonNext?: string;
   buttonBack?: string;
   buttonNextAction?: () => void;
@@ -24,30 +21,24 @@ export default function Content({
   className?: string;
 }) {
   return (
-    <div className="flex h-full">
-      <Section className={`flex-grow flex flex-col bg-white ${className}`}>
-        {header && (
-          <>
-            <Heading level={1}>{header}</Heading>
-            <hr className="my-4" />
-          </>
-        )}
-        <div className="flex-grow overflow-y-auto">{children}</div>
-        <div className="flex gap-4">
+    <div className={`h-full w-full flex flex-col bg-white ${className}`}>
+      {header && (
+        <div className="px-4 pt-4">
+          <Heading level={1}>{header}</Heading>
+          <hr className="my-4" />
+        </div>
+      )}
+      <div className="flex-grow overflow-y-auto px-4">{children}</div>
+      {(buttonBack || buttonNext) && (
+        <div className="p-4 flex gap-4">
           {buttonBack && (
-            <Button
-              fullWidth
-              className="mt-4"
-              onClick={buttonBackAction}
-              variant="secondary"
-            >
+            <Button fullWidth onClick={buttonBackAction} variant="secondary">
               {buttonBack}
             </Button>
           )}
           {buttonNext && (
             <Button
               fullWidth
-              className="mt-4"
               onClick={buttonNextAction}
               disabled={buttonNextDisabled}
             >
@@ -55,8 +46,7 @@ export default function Content({
             </Button>
           )}
         </div>
-      </Section>
-      {sidebar && <Sidebar />}
+      )}
     </div>
   );
 }

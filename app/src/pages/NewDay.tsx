@@ -1,17 +1,13 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Content from "../components/common/Content";
 import { useRouteCtx } from "../hooks/useRouteCtx";
 import type { PlanDay } from "../types/models";
 
 export default function NewDay() {
-  const { setPlanDays, planDays, setBackgroundType } = useRouteCtx();
+  const { setPlanDays, planDays } = useRouteCtx();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setBackgroundType("plan");
-  }, [setBackgroundType]);
 
   // Get current date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
@@ -77,12 +73,10 @@ export default function NewDay() {
   return (
     <Content
       header={isEditing ? "Edit day plan" : "New day plan"}
-      sidebar={true}
       buttonNext={isEditing ? "Save" : "Add"}
       buttonNextAction={saveDay}
       buttonBack="Back"
       buttonBackAction={() => navigate("/plan")}
-      className="rounded-tr-3xl"
     >
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div>
