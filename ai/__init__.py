@@ -1,0 +1,1 @@
+"""AI prediction service package."""
